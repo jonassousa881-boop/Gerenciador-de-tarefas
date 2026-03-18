@@ -37,10 +37,12 @@ function renderizarTarefas() {
         <span class="${tarefa.concluida ? "completed" : ""}">${tarefa.texto}</span>
       </div>
       <div class="task-actions">
-        <button onclick="alternarStatus(${tarefa.id})">
-          ${tarefa.concluida ? "Desfazer" : "Concluir"}
-        </button>
-        <button onclick="removerTarefa(${tarefa.id})">Excluir</button>
+       <button onclick="alternarStatus(${tarefa.id})">
+  ✔
+</button>
+<button onclick="removerTarefa(${tarefa.id})">
+  ✖
+</button>
       </div>
     `;
 
