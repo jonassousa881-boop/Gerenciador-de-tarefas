@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agenda de Tarefas - Jonas Sousa</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topo">
+      <h1>Agenda de Tarefas</h1>
+      <p>Organize suas tarefas com praticidade</p>
+    </header>
+
+    <main class="card">
+      <div class="form-area">
+        <input type="text" id="taskInput" placeholder="Digite uma tarefa..." />
+        <button id="addBtn">Adicionar</button>
+      </div>
+
+      <div class="filtros">
+        <button class="filter-btn active" data-filter="todas">Todas</button>
+        <button class="filter-btn" data-filter="pendentes">Pendentes</button>
+        <button class="filter-btn" data-filter="concluidas">Concluídas</button>
+      </div>
+
+      <ul id="taskList" class="task-list"></ul>
+
+      <p id="emptyState" class="empty-state">Nenhuma tarefa cadastrada.</p>
+
+      <footer class="rodape">
+        Desenvolvido por Jonas Sousa
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
