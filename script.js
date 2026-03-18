@@ -4,14 +4,14 @@ const taskList = document.getElementById("taskList");
 const emptyState = document.getElementById("emptyState");
 const filterButtons = document.querySelectorAll(".filter-btn");
 
-let tarefas = JSON.parse(localStorage.getItem("taskflow_tarefas")) || [];
+let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 let filtroAtual = "todas";
 
 function salvarTarefas() {
-  localStorage.setItem("taskflow_tarefas", JSON.stringify(tarefas));
+  localStorage.setItem("tarefas", JSON.stringify(tarefas));
 }
 
-function atualizarTela() {
+function renderizarTarefas() {
   taskList.innerHTML = "";
 
   let tarefasFiltradas = tarefas;
@@ -30,19 +30,17 @@ function atualizarTela() {
 
   tarefasFiltradas.forEach((tarefa) => {
     const li = document.createElement("li");
-    li.className = `task-item ${tarefa.concluida ? "completed" : ""}`;
+    li.className = "task-item";
 
     li.innerHTML = `
-      <div class="task-content">
-        <span class="task-text">${tarefa.texto}</span>
+      <div class="task-info">
+        <span class="${tarefa.concluida ? "completed" : ""}">${tarefa.texto}</span>
       </div>
       <div class="task-actions">
-        <button class="btn-check" onclick="alternarConclusao(${tarefa.id})">
+        <button onclick="alternarStatus(${tarefa.id})">
           ${tarefa.concluida ? "Desfazer" : "Concluir"}
         </button>
-        <button class="btn-delete" onclick="excluirTarefa(${tarefa.id})">
-          Excluir
-        </button>
+        <button onclick="removerTarefa(${tarefa.id})">Excluir</button>
       </div>
     `;
 
@@ -53,38 +51,40 @@ function atualizarTela() {
 function adicionarTarefa() {
   const texto = taskInput.value.trim();
 
-  if (!texto) {
+  if (texto === "") {
     alert("Digite uma tarefa.");
     return;
   }
 
   const novaTarefa = {
     id: Date.now(),
-    texto,
+    texto: texto,
     concluida: false
   };
 
   tarefas.push(novaTarefa);
+  salvarTarefas();
+  renderizarTarefas();
   taskInput.value = "";
-  salvarTarefas();
-  atualizarTela();
+  taskInput.focus();
 }
 
-function alternarConclusao(id) {
-  tarefas = tarefas.map((tarefa) =>
-    tarefa.id === id
-      ? { ...tarefa, concluida: !tarefa.concluida }
-      : tarefa
-  );
+function alternarStatus(id) {
+  tarefas = tarefas.map((tarefa) => {
+    if (tarefa.id === id) {
+      return { ...tarefa, concluida: !tarefa.concluida };
+    }
+    return tarefa;
+  });
 
   salvarTarefas();
-  atualizarTela();
+  renderizarTarefas();
 }
 
-function excluirTarefa(id) {
+function removerTarefa(id) {
   tarefas = tarefas.filter((tarefa) => tarefa.id !== id);
   salvarTarefas();
-  atualizarTela();
+  renderizarTarefas();
 }
 
 addBtn.addEventListener("click", adicionarTarefa);
@@ -95,13 +95,13 @@ taskInput.addEventListener("keypress", function (event) {
   }
 });
 
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    filterButtons.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    filtroAtual = btn.dataset.filter;
-    atualizarTela();
+filterButtons.forEach((button) => {
+  button.addEventListener("click", function () {
+    filterButtons.forEach((btn) => btn.classList.remove("active"));
+    this.classList.add("active");
+    filtroAtual = this.dataset.filter;
+    renderizarTarefas();
   });
 });
 
-atualizarTela();
+renderizarTarefas();
