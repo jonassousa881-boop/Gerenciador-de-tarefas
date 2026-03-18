@@ -49,10 +49,11 @@ input {
   flex: 1;
   padding: 12px;
   border-radius: 12px;
-  border: none;
+  border: 1px solid #cbd5e1;
   outline: none;
-  background: #0f172a;
-  color: white;
+  background: #ffffff; /* fundo branco */
+  color: #0f172a;
+
 }
 
 button {
